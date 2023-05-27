@@ -38,12 +38,21 @@ public class CategoryController : ControllerBase
             return StatusCode(500, "Falha interna no servidor");
         }
     }
+    [HttpGet("v1/categories/{categoryId}/products")]
+    public IActionResult GetProductsByCategory(int categoryId, [FromServices] AppDbContext context)
+    {
+        var products = context.Products
+            .Where(p => p.ProductCategoryId == categoryId)
+            .ToList();
+
+        return Ok(products);
+    }
 
     [HttpPost("v1/categories")]
     public IActionResult Post([FromBody] ProductCategory model, [FromServices] AppDbContext context)
     {
         context.ProductCategories.Add(model);
-            context.SaveChanges();
+        context.SaveChanges();
             return Created($"{model.Id}", model);
     }
 

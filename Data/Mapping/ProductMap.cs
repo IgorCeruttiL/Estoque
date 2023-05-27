@@ -32,6 +32,7 @@ public class ProductMap : IEntityTypeConfiguration<Product>
             .HasIndex(x => x.Slug, "IX_Category_Slug")
             .IsUnique();
 
-        builder.HasOne(x => x.ProductCategory).WithMany(x => x.Products).HasConstraintName("FK_Product_Category");
+        builder.Property<int>("ProductCategoryId");
+        builder.HasOne(x => x.ProductCategory).WithMany(x => x.Products).HasForeignKey("ProductCategoryId").IsRequired().HasConstraintName("FK_Product_Category");
     }
 }
